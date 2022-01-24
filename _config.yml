@@ -1,0 +1,180 @@
+# HPC-Intro Jekyll configuration
+---
+
+#------------------------------------------------------------
+# SITE specific configuration
+#------------------------------------------------------------
+
+# Cluster host and scheduler options: the defaults come from
+# Graham at Compute Canada, running Slurm. Other options can
+# be found in the library of snippets,
+# `_includes/snippets_library`. To use one, replace options
+# below with those in `_config_options.yml` from the
+# library. E.g, to customise for Cirrus at EPCC, running
+# PBS, we could replace the options below with those from
+# 
+# _includes/snippets_library/EPCC_Cirrus_pbs/_config_options.yml
+# 
+# If your cluster is not represented in the library, please
+# copy an existing folder, rename it, and customize for your
+# installation. Remember to keep the leading slash on the
+# `snippets` variable below!
+
+# For this specific fork of hpc-intro that uses Magic Castle (
+# https://github.com/ComputeCanada/magic_castle/tree/master/docs#magic-castle-documentation
+# ) with the EESSI (https://eessi.github.io/docs/) software
+# stack you will most likely also need to provide a customised
+# version of the cluster name and domain, which is currently
+# set to
+# "custom.learnhpc.eu".
+# For example, if our cluster was called
+# "cluster.hpc-carpentry.org", we could do this in a
+# single `sed` command from the current directory:
+# sed -i s/custom.learnhpc.eu/cluster.hpc-carpentry.org/g _config.yml
+
+snippets: "/snippets_library/Magic_Castle_EESSI_slurm"
+
+local:
+  prompt: "[user@laptop ~]$"
+  bash_shebang: "#!/usr/bin/env bash"
+
+remote:
+  name: "custom.learnhpc.eu"
+  login: "login1.custom.learnhpc.eu"
+  host: "login1.int.custom.learnhpc.eu"
+  node: "node1.int.custom.learnhpc.eu"
+  location: "Cloud resource"
+  homedir: "/home"
+  user: "yourUsername"
+  module_python3: "Python"
+  prompt: "[yourUsername@login1 ~]$"
+  bash_shebang: "#!/usr/bin/env bash"
+
+sched:
+  name: "Slurm"
+  submit:
+    name: "sbatch"
+    options: ""
+  queue:
+    debug: "cpubase_bycore_b1"
+    testing: "cpubase_bycore_b1"
+  status: "squeue"
+  flag:
+    user: "-u yourUsername"
+    interactive: ""
+    histdetail: "-l -j"
+    name: "-J"
+    time: "-t"
+    queue: "-p"
+  del: "scancel"
+  interactive: "srun"
+  info: "sinfo"
+  comment: "#SBATCH"
+  hist: "sacct -u yourUsername"
+
+episode_order:
+  - 11-hpc-intro
+  - 12-cluster
+  - 13-scheduler
+  - 14-modules
+  - 15-transferring-files
+  - 16-parallel
+  - 17-resources
+  - 18-responsibility
+
+#------------------------------------------------------------
+# Values for this lesson
+#------------------------------------------------------------
+
+# Which carpentry is this?
+# "swc": Software Carpentry
+# "dc":  Data Carpentry
+# "lc":  Library Carpentry
+# "cp":  Carpentries (e.g., instructor traning)
+carpentry: "incubator"
+
+# Overall title for pages.
+title: "Introduction to High-Performance Computing"
+
+# Email address, no mailto:
+email: "team@carpentries.org"
+
+# Life cycle stage of the lesson ("pre-alpha", "alpha", "beta", "stable")?
+life_cycle: "alpha"
+
+#------------------------------------------------------------
+# Generic settings (should not need to change).
+#------------------------------------------------------------
+
+# What kind of thing is this ("workshop" or "lesson")?
+kind: "lesson"
+
+# Start time in minutes (0 to be clock-independent, 540 to show a start at 09:00 am).
+start_time: 0
+
+# Magic to make URLs resolve both locally and on GitHub. Please don't change.
+repository: <USERNAME>/<PROJECT>
+
+# Invoke the Carpentries theme rather than copying into our repository.
+remote_theme: carpentries/carpentries-theme
+
+# Sites.
+amy_site: "https://amy.carpentries.org/"
+carpentries_github: "https://github.com/carpentries"
+carpentries_pages: "https://carpentries.github.io"
+carpentries_site: "https://carpentries.org/"
+dc_site: "https://datacarpentry.org"
+example_repo: "https://github.com/carpentries/lesson-example"
+example_site: "https://carpentries.github.io/lesson-example"
+lc_site: "https://librarycarpentry.org/"
+swc_github: "https://github.com/swcarpentry"
+swc_pages: "https://swcarpentry.github.io"
+swc_site: "https://software-carpentry.org"
+template_repo: "https://github.com/carpentries/styles"
+training_site: "https://carpentries.github.io/instructor-training"
+workshop_repo: "https://github.com/carpentries/workshop-template"
+workshop_site: "https://carpentries.github.io/workshop-template"
+cc_by_human: "https://creativecommons.org/licenses/by/4.0/"
+
+# Specify that things in the Episodes and Extras collections should be output.
+collections:
+  episodes:
+    output: true
+    permalink: /:path/index.html
+  extras:
+    output: true
+    permalink: /:path/index.html
+
+# Set the default layout for things in the episodes collection.
+defaults:
+  - values:
+      root: .
+      layout: page
+  - scope:
+      path: ""
+      type: episodes
+    values:
+      root: ..
+      layout: episode
+  - scope:
+      path: ""
+      type: extras
+    values:
+      root: ..
+      layout: page
+
+# Files and directories that are not to be copied.
+exclude:
+  - Makefile
+  - bin/
+  - .Rproj.user/
+  - .vendor/
+  - vendor/
+  - .docker-vendor/
+
+# Turn on built-in syntax highlighting.
+highlighter: rouge
+
+plugins:
+  - jekyll-redirect-from
+  - jekyll-paginate
